@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="RAUSHAN JEWELLERS - Nawada में असली सोना और चांदी के आभूषण">
+<title>RAUSHAN JEWELLERS | Nawada</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  scroll-behavior:smooth;
+}
+
+body{
+  font-family:Arial, Helvetica, sans-serif;
+  background:#0b0b0d;
+  color:#fff;
+  line-height:1.6;
+}
+
+:root{
+  --gold:#d8b15a;
+  --gold2:#f6df91;
+  --dark:#0b0b0d;
+  --card:#151519;
+  --muted:#bdbdbd;
+}
+
+/* NAVBAR */
+header{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  z-index:999;
+  background:rgba(8,8,10,.92);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(216,177,90,.25);
+}
+
+nav{
+  max-width:1200px;
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:16px 20px;
+}
+
+.logo{
+  color:var(--gold2);
+  font-size:22px;
+  font-weight:800;
+  letter-spacing:1px;
+}
+
+.logo span{
+  display:block;
+  font-size:10px;
+  letter-spacing:3px;
+  color:#aaa;
+  font-weight:400;
+}
+
+nav ul{
+  display:flex;
+  list-style:none;
+  gap:25px;
+}
+
+nav a{
+  color:white;
+  text-decoration:none;
+  font-size:14px;
+  transition:.3s;
+}
+
+nav a:hover{
+  color:var(--gold2);
+}
+
+.menu{
+  display:none;
+  font-size:25px;
+  cursor:pointer;
+}
+
+/* HERO */
+.hero{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:120px 20px 70px;
+  background:
+  radial-gradient(circle at 50% 20%,rgba(216,177,90,.18),transparent 35%),
+  linear-gradient(135deg,#111116,#050506);
+  position:relative;
+  overflow:hidden;
+}
+
+.hero:before{
+  content:"";
+  position:absolute;
+  width:500px;
+  height:500px;
+  border:1px solid rgba(216,177,90,.12);
+  border-radius:50%;
+  animation:rotate 20s linear infinite;
+}
+
+@keyframes rotate{
+  to{transform:rotate(360deg);}
+}
+
+.hero-content{
+  position:relative;
+  z-index:2;
+  max-width:800px;
+}
+
+.badge{
+  display:inline-block;
+  padding:8px 18px;
+  border:1px solid rgba(246,223,145,.5);
+  border-radius:50px;
+  color:var(--gold2);
+  font-size:12px;
+  letter-spacing:2px;
+  margin-bottom:22px;
+}
+
+.hero h1{
+  font-size:clamp(42px,8vw,82px);
+  line-height:1;
+  color:var(--gold2);
+  letter-spacing:2px;
+  text-shadow:0 0 30px rgba(216,177,90,.15);
+}
+
+.hero h2{
+  margin-top:15px;
+  font-size:clamp(18px,3vw,27px);
+  font-weight:400;
+}
+
+.hero p{
+  color:#bbb;
+  max-width:650px;
+  margin:20px auto 30px;
+}
+
+.buttons{
+  display:flex;
+  justify-content:center;
+  gap:14px;
+  flex-wrap:wrap;
+}
+
+.btn{
+  display:inline-block;
+  text-decoration:none;
+  padding:13px 25px;
+  border-radius:30px;
+  font-weight:700;
+  transition:.3s;
+}
+
+.btn-gold{
+  background:linear-gradient(135deg,#b88b2d,#f6df91);
+  color:#111;
+}
+
+.btn-outline{
+  border:1px solid var(--gold);
+  color:var(--gold2);
+}
+
+.btn:hover{
+  transform:translateY(-3px);
+}
+
+/* COMMON */
+section{
+  padding:90px 20px;
+}
+
+.container{
+  max-width:1150px;
+  margin:auto;
+}
+
+.title{
+  text-align:center;
+  margin-bottom:45px;
+}
+
+.title small{
+  color:var(--gold);
+  letter-spacing:3px;
+}
+
+.title h2{
+  font-size:38px;
+  margin-top:7px;
+}
+
+.title p{
+  color:#999;
+  margin-top:8px;
+}
+
+/* RATE */
+.rates{
+  background:#0e0e11;
+}
+
+.rate-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:22px;
+}
+
+.rate-card{
+  background:linear-gradient(145deg,#19191e,#0f0f12);
+  border:1px solid rgba(216,177,90,.25);
+  padding:30px;
+  border-radius:20px;
+  text-align:center;
+  box-shadow:0 15px 40px rgba(0,0,0,.3);
+}
+
+.rate-card .karat{
+  color:var(--gold2);
+  font-size:24px;
+  font-weight:bold;
+}
+
+.rate-card .rate{
+  font-size:35px;
+  margin:12px 0;
+  font-weight:800;
+}
+
+.rate-card p{
+  color:#999;
+  font-size:13px;
+}
+
+/* PRODUCTS */
+.product-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+}
+
+.product{
+  min-height:190px;
+  border-radius:18px;
+  padding:25px;
+  background:linear-gradient(145deg,#1a1a1f,#101014);
+  border:1px solid #29292d;
+  transition:.35s;
+}
+
+.product:hover{
+  transform:translateY(-7px);
+  border-color:var(--gold);
+}
+
+.product-icon{
+  font-size:40px;
+  margin-bottom:15px;
+}
+
+.product h3{
+  color:var(--gold2);
+  margin-bottom:5px;
+}
+
+.product p{
+  color:#999;
+  font-size:13px;
+}
+
+/* OFFER */
+.offer{
+  background:
+  radial-gradient(circle at center,rgba(216,177,90,.16),transparent 45%),
+  #111116;
+}
+
+.offer-box{
+  max-width:850px;
+  margin:auto;
+  text-align:center;
+  padding:50px 25px;
+  border:1px solid rgba(216,177,90,.4);
+  border-radius:25px;
+  background:rgba(255,255,255,.025);
+}
+
+.offer-box h2{
+  color:var(--gold2);
+  font-size:40px;
+}
+
+.offer-box p{
+  color:#ccc;
+  margin:15px auto 25px;
+}
+
+/* WHY */
+.why-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+
+.why{
+  text-align:center;
+  padding:30px 20px;
+  background:#151519;
+  border-radius:18px;
+}
+
+.why span{
+  font-size:38px;
+}
+
+.why h3{
+  color:var(--gold2);
+  margin:10px 0;
+}
+
+.why p{
+  color:#999;
+  font-size:14px;
+}
+
+/* CONTACT */
+.contact{
+  background:#0e0e11;
+}
+
+.contact-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:25px;
+}
+
+.contact-card{
+  background:#151519;
+  padding:30px;
+  border-radius:20px;
+  border:1px solid #28282d;
+}
+
+.contact-card h3{
+  color:var(--gold2);
+  margin-bottom:15px;
+}
+
+.contact-card p{
+  color:#bbb;
+  margin:9px 0;
+}
+
+.contact-card a{
+  color:var(--gold2);
+  text-decoration:none;
+}
+
+/* FOOTER */
+footer{
+  text-align:center;
+  padding:35px 20px;
+  border-top:1px solid #25252a;
+  color:#888;
+}
+
+footer strong{
+  color:var(--gold2);
+}
+
+/* WHATSAPP */
+.whatsapp{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  width:58px;
+  height:58px;
+  border-radius:50%;
+  background:#25d366;
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:28px;
+  text-decoration:none;
+  z-index:1000;
+  box-shadow:0 5px 25px rgba(37,211,102,.35);
+}
+
+/* MOBILE */
+@media(max-width:800px){
+
+  nav ul{
+    display:none;
+    position:absolute;
+    top:70px;
+    left:0;
+    width:100%;
+    background:#0b0b0d;
+    flex-direction:column;
+    padding:20px;
+    text-align:center;
+    border-bottom:1px solid #29292d;
+  }
+
+  nav ul.active{
+    display:flex;
+  }
+
+  .menu{
+    display:block;
+  }
+
+  .rate-grid,
+  .contact-grid{
+    grid-template-columns:1fr;
+  }
+
+  .product-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .why-grid{
+    grid-template-columns:1fr;
+  }
+
+  section{
+    padding:70px 16px;
+  }
+
+  .title h2{
+    font-size:30px;
+  }
+}
+
+@media(max-width:450px){
+  .product-grid{
+    grid-template-columns:1fr;
+  }
+
+  .hero h1{
+    font-size:45px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<nav>
+  <div class="logo">
+    RAUSHAN JEWELLERS
+    <span>NAWADA • BIHAR</span>
+  </div>
+
+  <div class="menu" onclick="toggleMenu()">☰</div>
+
+  <ul id="navLinks">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#rates">Rates</a></li>
+    <li><a href="#products">Jewellery</a></li>
+    <li><a href="#offer">Offers</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-content">
+
+    <div class="badge">REAL JEWELLERY • TRUST • QUALITY</div>
+
+    <h1>RAUSHAN</h1>
+    <h2>JEWELLERS</h2>
+
+    <p>
+      परंपरा और शुद्धता का दूसरा नाम।  
+      Nawada में असली सोना और चांदी के आभूषणों के लिए आपका भरोसेमंद ज्वेलरी शोरूम।
+    </p>
+
+    <div class="buttons">
+      <a href="#rates" class="btn btn-gold">आज का भाव</a>
+      <a href="tel:9939794568,9060871976" class="btn btn-outline">📞 अभी Call करें</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- RATES -->
+<section class="rates" id="rates">
+<div class="container">
+
+  <div class="title">
+    <small>TODAY'S RATE</small>
+    <h2>आज का भाव</h2>
+    <p>रेट बदलने पर नीचे की कीमत को अपडेट करें</p>
+  </div>
+
+  <div class="rate-grid">
+
+    <div class="rate-card">
+      <div class="karat">22K GOLD • 916</div>
+      <div class="rate">₹ 00,000</div>
+      <p>प्रति 10 ग्राम • आज का रेट</p>
+    </div>
+
+    <div class="rate-card">
+      <div class="karat">18K GOLD • 750</div>
+      <div class="rate">₹ 00,000</div>
+      <p>प्रति 10 ग्राम • आज का रेट</p>
+    </div>
+
+  </div>
+
+</div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products">
+<div class="container">
+
+  <div class="title">
+    <small>OUR COLLECTION</small>
+    <h2>हमारी Jewellery</h2>
+    <p>आपकी पसंद के लिए खूबसूरत डिजाइन</p>
+  </div>
+
+  <div class="product-grid">
+
+    <div class="product">
+      <div class="product-icon">💍</div>
+      <h3>Gold Rings</h3>
+      <p>22K एवं 18K में खूबसूरत अंगूठियों के डिजाइन।</p>
+    </div>
+
+    <div class="product">
+      <div class="product-icon">📿</div>
+      <h3>Gold Chains</h3>
+      <p>रोजाना और खास मौकों के लिए आकर्षक डिजाइन।</p>
+    </div>
+
+    <div class="product">
+      <div class="product-icon">✨</div>
+      <h3>Silver Payal</h3>
+      <p>अलग-अलग melting और डिजाइन में उपलब्ध।</p>
+    </div>
+
+    <div class="product">
+      <div class="product-icon">💎</div>
+      <h3>Bichiya</h3>
+      <p>सुंदर एवं पारंपरिक चांदी की बिछिया collection।</p>
+    </div>
+
+  </div>
+
+</div>
+</section>
+
+<!-- OFFER -->
+<section class="offer" id="offer">
+<div class="container">
+
+  <div class="offer-box">
+
+    <div class="badge">SPECIAL OFFER</div>
+
+    <h2>खास Offer आपके लिए</h2>
+
+    <p>
+      RAUSHAN JEWELLERS पर jewellery खरीदारी के साथ
+      विशेष offers और आकर्षक designs का लाभ उठाएं।
+    </p>
+
+    <a href="https://wa.me/919939795468?text=Namaste%20Raushan%20Jewellers%2C%20mujhe%20offer%20ki%20jaankari%20chahiye."
+       target="_blank"
+       class="btn btn-gold">
+       WhatsApp पर पूछें
+    </a>
+
+  </div>
+
+</div>
+</section>
+
+<!-- WHY US -->
+<section>
+<div class="container">
+
+  <div class="title">
+    <small>WHY RAUSHAN JEWELLERS</small>
+    <h2>हम पर भरोसा क्यों?</h2>
+  </div>
+
+  <div class="why-grid">
+
+    <div class="why">
+      <span>💎</span>
+      <h3>Real Jewellery</h3>
+      <p>हमारा focus असली jewellery और quality पर है।</p>
+    </div>
+
+    <div class="why">
+      <span>⚖️</span>
+      <h3>सही जानकारी</h3>
+      <p>Gold और Silver की purity तथा rate की जानकारी स्पष्ट रूप से।</p>
+    </div>
+
+    <div class="why">
+      <span>🤝</span>
+      <h3>भरोसा</h3>
+      <p>ग्राहकों के साथ भरोसे और अच्छे व्यवहार को प्राथमिकता।</p>
+    </div>
+
+  </div>
+
+</div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+<div class="container">
+
+  <div class="title">
+    <small>GET IN TOUCH</small>
+    <h2>हमसे संपर्क करें</h2>
+  </div>
+
+  <div class="contact-grid">
+
+    <div class="contact-card">
+      <h3>🏪 RAUSHAN JEWELLERS</h3>
+
+      <p>📍 Nawada Teli Tola, Near Railway Crossing</p>
+      <p>📍 Bundelkhand, Nawada, Bihar – 805110</p>
+
+      <p>📞 <a href="tel:9939794568">9939794568</a></p>
+      <p>📞 <a href="tel:8235905901">8235905901</a></p>
+    </div>
+
+    <div class="contact-card">
+      <h3>💬 WhatsApp पर बात करें</h3>
+
+      <p>
+        Jewellery, rate, design या offer की जानकारी के लिए
+        WhatsApp पर सीधे message करें।
+      </p>
+
+      <br>
+
+      <a
+      href="https://wa.me/919939795468?text=Namaste%20Raushan%20Jewellers%2C%20mujhe%20jewellery%20ki%20jaankari%20chahiye."
+      target="_blank"
+      class="btn btn-gold">
+      WhatsApp करें
+      </a>
+    </div>
+
+  </div>
+
+</div>
+</section>
+
+<footer>
+  © 2026 <strong>RAUSHAN JEWELLERS</strong> — All Rights Reserved.
+  <br>
+  <small>Nawada, Bihar</small>
+</footer>
+
+<!-- FLOATING WHATSAPP -->
+<a
+  class="whatsapp"
+  href="https://wa.me/919939795468?text=Namaste%20Raushan%20Jewellers"
+  target="_blank"
+  aria-label="WhatsApp">
+  ☎
+</a>
+
+<script>
+function toggleMenu(){
+  document.getElementById("navLinks").classList.toggle("active");
+}
+
+document.querySelectorAll("#navLinks a").forEach(link=>{
+  link.addEventListener("click",()=>{
+    document.getElementById("navLinks").classList.remove("active");
+  });
+});
+</script>
+
+</body>
+</html>
