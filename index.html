@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>RAUSHAN JEWELLERS | Nawada</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;scroll-behavior:smooth}
+:root{
+--gold:#d4af37;--light:#fff0ad;--bg:#050505;
+--card:#111;--muted:#999
+}
+body{background:var(--bg);color:#fff;font-family:Arial,sans-serif}
+a{text-decoration:none;color:inherit}
+.top{background:#000;text-align:center;padding:8px;color:var(--light);font-size:12px;letter-spacing:2px;border-bottom:1px solid #382e17}
+header{position:sticky;top:0;z-index:999;background:rgba(5,5,5,.95);backdrop-filter:blur(15px);border-bottom:1px solid #3b3018}
+nav{max-width:1200px;margin:auto;padding:15px 20px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:21px;font-weight:900;letter-spacing:2px;color:var(--light)}
+.logo small{display:block;text-align:center;font-size:8px;letter-spacing:4px;color:#777}
+nav ul{display:flex;gap:24px;list-style:none}
+nav a{color:#ddd;font-size:14px}
+nav a:hover{color:var(--light)}
+.menu{display:none;font-size:28px;cursor:pointer}
+
+.hero{
+min-height:88vh;display:flex;align-items:center;justify-content:center;
+text-align:center;padding:70px 20px;position:relative;overflow:hidden;
+background:radial-gradient(circle,rgba(212,175,55,.2),transparent 40%),
+linear-gradient(135deg,#181818,#020202)
+}
+.hero:before,.hero:after{content:"";position:absolute;border:1px solid rgba(212,175,55,.12);border-radius:50%}
+.hero:before{width:480px;height:480px}
+.hero:after{width:700px;height:700px}
+.hero-content{position:relative;z-index:2;max-width:850px}
+.crown{font-size:55px;color:var(--gold)}
+.hero h1{
+font-size:clamp(48px,9vw,90px);letter-spacing:6px;line-height:1;
+background:linear-gradient(90deg,#a87814,#fff1aa,#c18d1e);
+-webkit-background-clip:text;color:transparent
+}
+.hero h2{font-size:27px;letter-spacing:8px;margin-top:12px}
+.hero p{max-width:680px;margin:25px auto;color:#aaa;line-height:1.7}
+.buttons{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.btn{display:inline-block;padding:13px 25px;border-radius:30px;font-weight:bold;cursor:pointer;border:0}
+.gold{background:linear-gradient(135deg,#a97813,#ffe99b,#a97813);color:#111}
+.outline{border:1px solid var(--gold);color:var(--light)}
+
+section{padding:80px 20px}
+.container{max-width:1150px;margin:auto}
+.title{text-align:center;margin-bottom:40px}
+.title span{color:var(--gold);font-size:12px;letter-spacing:4px}
+.title h2{font-size:38px;margin-top:8px}
+.title p{color:#888;margin-top:8px}
+
+.rates{background:#0c0c0c}
+.updated{text-align:center;color:#777;font-size:12px;margin-bottom:25px}
+.rate-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px}
+.rate-card{
+background:linear-gradient(145deg,#1b1b1b,#090909);
+border:1px solid rgba(212,175,55,.35);border-radius:22px;
+padding:25px 12px;text-align:center;transition:.3s
+}
+.rate-card:hover{transform:translateY(-5px);border-color:var(--gold)}
+.rate-card h3{color:var(--light);font-size:14px}
+.rate{font-size:27px;font-weight:900;margin:12px 0}
+.rate-card small{color:#777}
+
+.products{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.product{
+background:#111;border:1px solid #292929;border-radius:20px;
+overflow:hidden;transition:.3s;cursor:pointer
+}
+.product:hover{transform:translateY(-6px);border-color:var(--gold)}
+.product img,.placeholder{width:100%;height:220px;object-fit:cover}
+.placeholder{
+display:flex;align-items:center;justify-content:center;
+font-size:65px;background:radial-gradient(circle,#4a3711,#111)
+}
+.product-info{padding:18px}
+.product-info h3{color:var(--light);margin-bottom:7px}
+.product-info p{color:#888;font-size:13px;line-height:1.5}
+
+.offer{background:radial-gradient(circle,rgba(212,175,55,.13),transparent 45%),#101010}
+.offer-box{max-width:850px;margin:auto;padding:50px 25px;text-align:center;border:1px solid rgba(212,175,55,.4);border-radius:28px}
+.offer-box h2{font-size:38px;color:var(--light);margin:15px}
+.offer-box p{color:#aaa;margin-bottom:25px;line-height:1.6}
+
+.why{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.why-card{background:#131313;border:1px solid #282828;border-radius:20px;padding:30px;text-align:center}
+.why-card div{font-size:40px}
+.why-card h3{color:var(--light);margin:10px}
+.why-card p{color:#888;font-size:13px}
+
+.contact{background:#0c0c0c}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.contact-card{background:#151515;border:1px solid #292929;padding:30px;border-radius:22px}
+.contact-card h3{color:var(--light);margin-bottom:15px}
+.contact-card p{color:#aaa;margin:8px 0}
+
+.admin-button{
+position:fixed;left:18px;bottom:18px;width:50px;height:50px;
+border-radius:50%;border:1px solid var(--gold);background:#111;
+color:var(--light);z-index:1500;cursor:pointer
+}
+.whatsapp{
+position:fixed;right:18px;bottom:18px;width:58px;height:58px;
+border-radius:50%;background:#25d366;display:flex;
+align-items:center;justify-content:center;font-size:28px;z-index:1500
+}
+
+.modal{
+display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);
+z-index:3000;align-items:center;justify-content:center;padding:15px
+}
+.box{
+width:100%;max-width:580px;max-height:92vh;overflow:auto;
+background:#151515;border:1px solid var(--gold);border-radius:22px;padding:25px
+}
+.box h2{text-align:center;color:var(--light);margin-bottom:20px}
+input{
+width:100%;padding:12px;margin:6px 0 12px;background:#080808;
+border:1px solid #333;border-radius:9px;color:#fff;outline:none
+}
+label{display:block;color:#aaa;font-size:13px;margin-top:5px}
+.row{border-top:1px solid #292929;padding-top:18px;margin-top:15px}
+.actions{display:flex;gap:10px;margin-top:20px}
+.actions button{flex:1;padding:12px;border:0;border-radius:9px;font-weight:bold;cursor:pointer}
+.close{background:#292929;color:#fff}
+.status{text-align:center;margin-top:12px;font-size:13px}
+.admin-product{border-bottom:1px solid #292929;padding:15px 0}
+.admin-product img{width:80px;height:80px;object-fit:cover;border-radius:8px;margin:8px 0}
+.delete{background:#642525;color:#fff;border:0;padding:9px;border-radius:7px;width:100%;margin-top:7px;cursor:pointer}
+.update{background:linear-gradient(135deg,#a97813,#ffe99b);color:#111;border:0;padding:10px;border-radius:7px;width:100%;cursor:pointer;margin-top:5px}
+
+.detail{width:100%;max-width:600px;background:#151515;border:1px solid var(--gold);border-radius:22px;overflow:hidden;position:relative}
+.detail img{width:100%;max-height:400px;object-fit:cover}
+.detail-content{padding:25px}
+.detail-content h2{color:var(--light);margin-bottom:10px}
+.detail-content p{color:#aaa;line-height:1.6;margin-bottom:20px}
+.x{
+position:absolute;right:10px;top:10px;width:38px;height:38px;
+border-radius:50%;border:1px solid var(--gold);background:#080808;color:#fff;cursor:pointer
+}
+
+footer{padding:35px;text-align:center;background:#030303;border-top:1px solid #29200e;color:#777}
+footer strong{color:var(--light)}
+
+@media(max-width:1000px){
+.rate-grid{grid-template-columns:repeat(3,1fr)}
+.products{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:800px){
+nav ul{display:none;position:absolute;top:70px;left:0;width:100%;background:#080808;flex-direction:column;text-align:center;padding:20px}
+nav ul.active{display:flex}
+.menu{display:block}
+.rate-grid{grid-template-columns:1fr}
+.products{grid-template-columns:repeat(2,1fr)}
+.why,.contact-grid{grid-template-columns:1fr}
+}
+@media(max-width:450px){
+.products{grid-template-columns:1fr}
+.hero h1{font-size:46px}
+.hero h2{font-size:21px;letter-spacing:5px}
+.title h2{font-size:31px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="top">✦ RAUSHAN JEWELLERS • NAWADA ✦</div>
+
+<header>
+<nav>
+<div class="logo">
+RAUSHAN JEWELLERS
+<small>NAWADA • BIHAR</small>
+</div>
+
+<div class="menu" onclick="toggleMenu()">☰</div>
+
+<ul id="nav">
+<li><a href="#home">Home</a></li>
+<li><a href="#rates">Rates</a></li>
+<li><a href="#collection">Collection</a></li>
+<li><a href="#offer">Offers</a></li>
+<li><a href="#contact">Contact</a></li>
+</ul>
+</nav>
+</header>
+
+<section class="hero" id="home">
+<div class="hero-content">
+<div class="crown">♕</div>
+<h1>RAUSHAN</h1>
+<h2>JEWELLERS</h2>
+<p>
+परंपरा और शुद्धता का दूसरा नाम।
+Nawada में असली सोना और चांदी के आभूषणों के लिए आपका भरोसेमंद नाम।
+</p>
+<div class="buttons">
+<a class="btn gold" href="#rates">🪙 आज का भाव</a>
+<a class="btn outline" href="tel:9939794568">📞 Call करें</a>
+</div>
+</div>
+</section>
+
+<section class="rates" id="rates">
+<div class="container">
+
+<div class="title">
+<span>TODAY'S RATE</span>
+<h2>आज का भाव</h2>
+<p>RAUSHAN JEWELLERS • Nawada</p>
+</div>
+
+<div class="updated">
+Last Updated: <strong id="updated">Loading...</strong>
+</div>
+
+<div class="rate-grid">
+
+<div class="rate-card">
+<h3>24K GOLD</h3>
+<div class="rate">₹<span id="gold24">0</span></div>
+<small>प्रति 10 ग्राम</small>
+</div>
+
+<div class="rate-card">
+<h3>22K GOLD • 916</h3>
+<div class="rate">₹<span id="gold22">0</span></div>
+<small>प्रति 10 ग्राम</small>
+</div>
+
+<div class="rate-card">
+<h3>18K GOLD • 750</h3>
+<div class="rate">₹<span id="gold18">0</span></div>
+<small>प्रति 10 ग्राम</small>
+</div>
+
+<div class="rate-card">
+<h3>SILVER</h3>
+<div class="rate">₹<span id="silver">0</span></div>
+<small>प्रति किलो</small>
+</div>
+
+<div class="rate-card">
+<h3>SILVER PAYAL</h3>
+<div class="rate">₹<span id="payal">0</span></div>
+<small>प्रति ग्राम</small>
+</div>
+
+</div>
+</div>
+</section>
+
+<section id="collection">
+<div class="container">
+
+<div class="title">
+<span>OUR COLLECTION</span>
+<h2>Jewellery Collection</h2>
+<p>Image पर click करके jewellery की details देखें</p>
+</div>
+
+<div class="products" id="products">
+<p style="color:#888">Loading...</p>
+</div>
+
+</div>
+</section>
+
+<section class="offer" id="offer">
+<div class="container">
+<div class="offer-box">
+<span style="color:#d4af37;letter-spacing:3px">SPECIAL OFFER</span>
+<h2>आपके लिए खास Offer</h2>
+<p>Latest jewellery designs और special offers की जानकारी के लिए हमें WhatsApp करें।</p>
+<a class="btn gold" target="_blank"
+href="https://wa.me/919939795468?text=Namaste%20Raushan%20Jewellers%2C%20mujhe%20latest%20offer%20ki%20jaankari%20chahiye.">
+💬 WhatsApp पर पूछें
+</a>
+</div>
+</div>
+</section>
+
+<section>
+<div class="container">
+<div class="title">
+<span>WHY RAUSHAN JEWELLERS</span>
+<h2>हम पर भरोसा क्यों?</h2>
+</div>
+
+<div class="why">
+<div class="why-card">
+<div>💎</div>
+<h3>Real Jewellery</h3>
+<p>असली jewellery और quality को प्राथमिकता।</p>
+</div>
+
+<div class="why-card">
+<div>⚖️</div>
+<h3>Purity</h3>
+<p>916 और 750 purity की jewellery उपलब्ध।</p>
+</div>
+
+<div class="why-card">
+<div>🤝</div>
+<h3>भरोसा</h3>
+<p>ग्राहकों के विश्वास और संतुष्टि को प्राथमिकता।</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="contact" id="contact">
+<div class="container">
+
+<div class="title">
+<span>CONTACT</span>
+<h2>हमसे संपर्क करें</h2>
+</div>
+
+<div class="contact-grid">
+
+<div class="contact-card">
+<h3>🏪 RAUSHAN JEWELLERS</h3>
+<p>📍 Nawada Teli Tola</p>
+<p>📍 Near Railway Crossing</p>
+<p>📍 Bundelkhand, Nawada, Bihar – 805110</p>
+<p>📞 9939794568</p>
+<p>📞 8235905901</p>
+</div>
+
+<div class="contact-card">
+<h3>💬 WhatsApp</h3>
+<p>Gold rate, silver rate, jewellery design या offer की जानकारी के लिए सीधे WhatsApp करें।</p>
+<br>
+<a class="btn gold" target="_blank"
+href="https://wa.me/919939795468?text=Namaste%20Raushan%20Jewellers">
+WhatsApp करें
+</a>
+</div>
+
+</div>
+</div>
+</section>
+
+<footer>
+<strong>RAUSHAN JEWELLERS</strong><br>
+Nawada Teli Tola • Near Railway Crossing • Bundelkhand
+<br><br>
+© 2026 RAUSHAN JEWELLERS
+</footer>
+
+<button class="admin-button" onclick="openAdmin()">⚙️</button>
+
+<a class="whatsapp" target="_blank"
+href="https://wa.me/919939795468?text=Namaste%20Raushan%20Jewellers">💬</a>
+
+<!-- ADMIN -->
+
+<div class="modal" id="adminModal">
+<div class="box">
+
+<h2>⚙️ RAUSHAN ADMIN</h2>
+
+<label>Admin Password</label>
+<input id="password" type="password" placeholder="Admin Password">
+
+<div class="row">
+
+<label>24K Gold • प्रति 10 ग्राम</label>
+<input id="a24" type="number">
+
+<label>22K Gold • 916 • प्रति 10 ग्राम</label>
+<input id="a22" type="number">
+
+<label>18K Gold • 750 • प्रति 10 ग्राम</label>
+<input id="a18" type="number">
+
+<label>Silver • प्रति किलो</label>
+<input id="asilver" type="number">
+
+<label>Silver Payal • प्रति ग्राम</label>
+<input id="apayal" type="number">
+
+</div>
+
+<div class="row">
+<h3 style="color:#ffe9a6;margin-bottom:15px">🖼️ Products</h3>
+<div id="adminProducts">Loading...</div>
+</div>
+
+<div class="row">
+
+<h3 style="color:#ffe9a6;margin-bottom:15px">➕ नया Product</h3>
+
+<label>Product Name</label>
+<input id="newName" placeholder="जैसे Gold Ring">
+
+<label>Description</label>
+<input id="newDesc" placeholder="Product description">
+
+<label>Image</label>
+<input id="newImage" type="file" accept="image/*">
+
+</div>
+
+<div class="actions">
+<button class="gold" onclick="saveRates()">💾 SAVE RATES</button>
+<button class="close" onclick="closeAdmin()">CLOSE</button>
+</div>
+
+<div id="msg" class="status"></div>
+
+</div>
+</div>
+
+<!-- DETAIL -->
+
+<div class="modal" id="detailModal">
+<div class="detail">
+
+<button class="x" onclick="closeDetail()">✕</button>
+
+<img id="detailImage" src="" alt="">
+
+<div class="detail-content">
+
+<h2 id="detailName"></h2>
+
+<p id="detailDesc"></p>
+
+<a id="detailWhatsApp" class="btn gold" target="_blank">
+💬 मुझे यह सामान चाहिए
+</a>
+
+</div>
+</div>
+</div>
+
+<script>
+
+/* SUPABASE */
+
+const SUPABASE_URL =
+"https://zarnhovxzrjkwurueaxj.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_kvJOcOa4TQxqDJcCUxKieg_NtcTJG2Z";
+
+const supabaseClient =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+/* DATA */
+
+let settings = null;
+let products = [];
+
+/* HELPERS */
+
+function money(value){
+return Number(value || 0).toLocaleString("en-IN");
+}
+
+function message(text,error=false){
+const el=document.getElementById("msg");
+el.innerText=text;
+el.style.color=error ? "#ff7777" : "#9f9";
+}
+
+/* LOAD RATES */
+
+async function loadRates(){
+
+const {data,error}=await supabaseClient
+.from("jewellery_settings")
+.select("*")
+.limit(1)
+.single();
+
+if(error){
+console.error(error);
+document.getElementById("updated").innerText="Database Error";
+return;
+}
+
+settings=data;
+
+document.getElementById("gold24").innerText=money(data.gold_24k);
+document.getElementById("gold22").innerText=money(data.gold_22k);
+document.getElementById("gold18").innerText=money(data.gold_18k);
+document.getElementById("silver").innerText=money(data.silver);
+document.getElementById("payal").innerText=money(data.silver_payal_gram);
+
+document.getElementById("updated").innerText=
+new Date(data.updated_at).toLocaleString(
+"en-IN",
+{
+day:"2-digit",
+month:"long",
+year:"numeric",
+hour:"2-digit",
+minute:"2-digit"
+}
+);
+}
+
+/* LOAD PRODUCTS */
+
+async function loadProducts(){
+
+const {data,error}=await supabaseClient
+.from("jewellery_products")
+.select("*")
+.order("id",{ascending:false});
+
+if(error){
+console.error(error);
+document.getElementById("products").innerHTML=
+"<p style='color:#f77'>Products load नहीं हुए।</p>";
+return;
+}
+
+products=data || [];
+renderProducts();
+renderAdminProducts();
+}
+
+/* CUSTOMER PRODUCTS */
+
+function renderProducts(){
+
+const box=document.getElementById("products");
+box.innerHTML="";
+
+if(products.length===0){
+box.innerHTML=
+"<p style='grid-column:1/-1;text-align:center;color:#888;padding:30px'>अभी कोई product नहीं है।</p>";
+return;
+}
+
+products.forEach(p=>{
+
+const div=document.createElement("div");
+div.className="product";
+
+div.onclick=()=>openDetail(p);
+
+if(p.image_url){
+div.innerHTML=
+`<img src="${safe(p.image_url)}" alt="${safe(p.name)}">`;
+}else{
+div.innerHTML=`<div class="placeholder">💎</div>`;
+}
+
+div.innerHTML+=`
+<div class="product-info">
+<h3>${safe(p.name)}</h3>
+<p>${safe(p.description || "")}</p>
+</div>
+`;
+
+box.appendChild(div);
+});
+}
+
+/* DETAIL */
+
+function openDetail(p){
+
+document.getElementById("detailModal").style.display="flex";
+
+document.getElementById("detailName").innerText=p.name;
+document.getElementById("detailDesc").innerText=p.description || "";
+
+const img=document.getElementById("detailImage");
+
+if(p.image_url){
+img.src=p.image_url;
+img.style.display="block";
+}else{
+img.style.display="none";
+}
+
+const text=
+"Namaste Raushan Jewellers, mujhe ye jewellery chahiye: "
++p.name;
+
+document.getElementById("detailWhatsApp").href=
+"https://wa.me/919939795468?text="
++encodeURIComponent(text);
+}
+
+function closeDetail(){
+document.getElementById("detailModal").style.display="none";
+}
+
+/* ADMIN */
+
+function openAdmin(){
+
+document.getElementById("adminModal").style.display="flex";
+
+if(settings){
+
+document.getElementById("a24").value=settings.gold_24k || 0;
+document.getElementById("a22").value=settings.gold_22k || 0;
+document.getElementById("a18").value=settings.gold_18k || 0;
+document.getElementById("asilver").value=settings.silver || 0;
+document.getElementById("apayal").value=settings.silver_payal_gram || 0;
+
+}
+
+renderAdminProducts();
+}
+
+function closeAdmin(){
+document.getElementById("adminModal").style.display="none";
+}
+
+/* ADMIN PRODUCTS */
+
+function renderAdminProducts(){
+
+const box=document.getElementById("adminProducts");
+box.innerHTML="";
+
+if(!products.length){
+box.innerHTML="<p style='color:#888'>कोई product नहीं है।</p>";
+return;
+}
+
+products.forEach(p=>{
+
+const div=document.createElement("div");
+div.className="admin-product";
+
+div.innerHTML=`
+<strong style="color:#ffe9a6">${safe(p.name)}</strong>
+<br>
+
+${p.image_url
+? `<img src="${safe(p.image_url)}">`
+: `<div style="font-size:35px;margin:8px">💎</div>`
+}
+
+<label>Name बदलें</label>
+<input id="pn-${p.id}" value="${attr(p.name)}">
+
+<label>Description बदलें</label>
+<input id="pd-${p.id}" value="${attr(p.description || "")}">
+
+<label>नई Image</label>
+<input id="pi-${p.id}" type="file" accept="image/*">
+
+<button class="update" onclick="updateProduct(${p.id})">
+💾 UPDATE PRODUCT
+</button>
+
+<button class="delete" onclick="deleteProduct(${p.id})">
+🗑️ DELETE
+</button>
+`;
+
+box.appendChild(div);
+});
+}
+
+/* IMAGE UPLOAD */
+
+async function uploadImage(file){
+
+if(!file)return "";
+
+const ext=file.name.split(".").pop().toLowerCase();
+
+const path=
+"product-"+Date.now()+"-"+Math.random().toString(36).slice(2)+"."+ext;
+
+const {error}=await supabaseClient.storage
+.from("jewellery-images")
+.upload(path,file,{upsert:false});
+
+if(error)throw error;
+
+const result=supabaseClient.storage
+.from("jewellery-images")
+.getPublicUrl(path);
+
+return result.data.publicUrl;
+}
+
+/* SAVE RATES */
+
+async function saveRates(){
+
+const pass=document.getElementById("password").value;
+
+if(pass!=="1234"){
+message("❌ गलत Admin Password",true);
+return;
+}
+
+if(!settings){
+message("❌ Database data नहीं मिला",true);
+return;
+}
+
+try{
+
+message("⏳ Rates save हो रहे हैं...");
+
+const {error}=await supabaseClient
+.from("jewellery_settings")
+.update({
+gold_24k:Number(document.getElementById("a24").value),
+gold_22k:Number(document.getElementById("a22").value),
+gold_18k:Number(document.getElementById("a18").value),
+silver:Number(document.getElementById("asilver").value),
+silver_payal_gram:Number(document.getElementById("apayal").value),
+updated_at:new Date().toISOString()
+})
+.eq("id",settings.id);
+
+if(error)throw error;
+
+/* NEW PRODUCT */
+
+const name=document.getElementById("newName").value.trim();
+const desc=document.getElementById("newDesc").value.trim();
+const file=document.getElementById("newImage").files[0];
+
+if(name){
+
+let image_url="";
+
+if(file){
+message("⏳ Image upload हो रही है...");
+image_url=await uploadImage(file);
+}
+
+const {error:productError}=await supabaseClient
+.from("jewellery_products")
+.insert({
+name:name,
+description:desc || "Beautiful jewellery design",
+image_url:image_url
+});
+
+if(productError)throw productError;
+}
+
+document.getElementById("newName").value="";
+document.getElementById("newDesc").value="";
+document.getElementById("newImage").value="";
+document.getElementById("password").value="";
+
+message("✅ Successfully Updated");
+
+await loadRates();
+await loadProducts();
+
+}catch(error){
+
+console.error(error);
+message("❌ "+error.message,true);
+}
+}
+
+/* UPDATE PRODUCT */
+  
