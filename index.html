@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RAUSHAN JEWELLERS | Nawada</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{background:#050505;color:#fff;font-family:Arial}header{position:sticky;top:0;background:#080808;padding:18px;text-align:center;border-bottom:1px solid #765}h1{color:#ffe9a6;letter-spacing:3px}section{padding:55px 15px;max-width:1100px;margin:auto}.hero{text-align:center;min-height:70vh;padding-top:120px;background:radial-gradient(circle,#352b12,#050505)}h2{margin:12px 0;color:#ffe9a6}.btn{display:inline-block;padding:12px 22px;border-radius:25px;background:#d4af37;color:#111;font-weight:bold;border:0;margin:6px;cursor:pointer}.rates{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.card{background:#151515;border:1px solid #765;border-radius:15px;padding:22px;text-align:center}.rate{font-size:25px;font-weight:bold;margin:12px}.products{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.product{background:#151515;border-radius:15px;overflow:hidden}.product img{width:100%;height:190px;object-fit:cover}.info{padding:15px}.modal{display:none;position:fixed;inset:0;background:#000d;z-index:9;padding:15px;align-items:center;justify-content:center}.box{background:#151515;border:1px solid #d4af37;border-radius:18px;padding:20px;width:100%;max-width:550px;max-height:90vh;overflow:auto}input{width:100%;padding:11px;margin:6px 0 12px;background:#080808;color:white;border:1px solid #555;border-radius:8px}.admin{position:fixed;bottom:18px;left:18px;border-radius:50%;width:52px;height:52px;background:#111;color:#ffe9a6;border:1px solid #d4af37;font-size:22px;z-index:8}.wa{position:fixed;right:18px;bottom:18px;background:#25d366;border-radius:50%;padding:17px;font-size:22px;z-index:8}@media(max-width:700px){.rates{grid-template-columns:1fr}.products{grid-template-columns:repeat(2,1fr)}.hero{min-height:60vh}.product img{height:150px}}@media(max-width:400px){.products{grid-template-columns:1fr}}
+</style>
+</head>
+
+<body>
+
+<header><h1>♕ RAUSHAN JEWELLERS</h1><small>NAWADA • BIHAR</small></header>
+
+<section class="hero">
+<h1 style="font-size:45px">RAUSHAN</h1>
+<h2>JEWELLERS</h2>
+<p>परंपरा और शुद्धता का दूसरा नाम।<br>असली सोना और चांदी के आभूषण।</p>
+<a class="btn" href="#rates">🪙 आज का भाव</a>
+<a class="btn" href="tel:9939794568">📞 Call</a>
+</section>
+
+<section id="rates">
+<h2 style="text-align:center">आज का भाव</h2>
+<p style="text-align:center;color:#888">Last Updated: <span id="updated">Loading...</span></p><br>
+<div class="rates">
+<div class="card">24K GOLD<div class="rate">₹<span id="gold24">0</span></div>10 ग्राम</div>
+<div class="card">22K GOLD • 916<div class="rate">₹<span id="gold22">0</span></div>10 ग्राम</div>
+<div class="card">18K GOLD • 750<div class="rate">₹<span id="gold18">0</span></div>10 ग्राम</div>
+<div class="card">SILVER<div class="rate">₹<span id="silver">0</span></div>1 किलो</div>
+<div class="card">SILVER PAYAL<div class="rate">₹<span id="payal">0</span></div>1 ग्राम</div>
+</div>
+</section>
+
+<section>
+<h2 style="text-align:center">Jewellery Collection</h2><br>
+<div class="products" id="products">Loading...</div>
+</section>
+
+<section style="text-align:center">
+<h2>Special Offer</h2>
+<p>Latest jewellery designs और offers के लिए WhatsApp करें।</p>
+<a class="btn" target="_blank" href="https://wa.me/919939795468">💬 WhatsApp</a>
+</section>
+
+<section>
+<h2>RAUSHAN JEWELLERS</h2>
+<p>📍 Nawada Teli Tola, Near Railway Crossing<br>📍 Bundelkhand, Nawada, Bihar – 805110<br>📞 9939794568<br>📞 8235905901</p>
+</section>
+
+<button class="admin" onclick="openAdmin()">⚙️</button>
+<a class="wa" target="_blank" href="https://wa.me/919939795468">💬</a>
+
+<div class="modal" id="adminModal">
+<div class="box">
+<h2>⚙️ RAUSHAN ADMIN</h2>
+
+<label>Password</label>
+<input id="password" type="password" placeholder="1234">
+
+<label>24K Gold / 10g</label><input id="a24" type="number">
+<label>22K Gold / 10g</label><input id="a22" type="number">
+<label>18K Gold / 10g</label><input id="a18" type="number">
+<label>Silver / Kg</label><input id="asilver" type="number">
+<label>Payal / Gram</label><input id="apayal" type="number">
+
+<button class="btn" onclick="saveRates()">💾 SAVE RATES</button>
+<button class="btn" onclick="closeAdmin()">CLOSE</button>
+
+<hr><br><h2>➕ Product Add</h2>
+<input id="newName" placeholder="Product Name">
+<input id="newDesc" placeholder="Description">
+<input id="newImage" type="file" accept="image/*">
+<button class="btn" onclick="addProduct()">ADD PRODUCT</button>
+
+<p id="msg" style="text-align:center;margin:15px"></p>
+<div id="adminProducts"></div>
+</div>
+</div>
+
+<script>
+const URL="https://zarnhovxzrjkwurueaxj.supabase.co";
+const KEY="sb_publishable_kvJOcOa4TQxqDJcCUxKieg_NtcTJG2Z";
+const db=window.supabase.createClient(URL,KEY);
+let settings=null,products=[];
+
+const $=id=>document.getElementById(id);
+const money=x=>Number(x||0).toLocaleString("en-IN");
+const msg=(x,e=false)=>{$("msg").innerText=x;$("msg").style.color=e?"#f77":"#9f9"};
+
+async function loadRates(){
+ try{
+  let r=await db.from("jewellery_settings").select("*").eq("id",1).maybeSingle();
+  if(r.error)throw r.error;
+  if(!r.data){$("updated").innerText="No rate data";return}
+  settings=r.data;
+  $("gold24").innerText=money(settings.gold_24k);
+  $("gold22").innerText=money(settings.gold_22k);
+  $("gold18").innerText=money(settings.gold_18k);
+  $("silver").innerText=money(settings.silver);
+  $("payal").innerText=money(settings.silver_payal_gram);
+  $("updated").innerText=new Date(settings.updated_at).toLocaleString("en-IN");
+ }catch(e){console.error(e);$("updated").innerText="Database Error"}
+}
+
+async function loadProducts(){
+ let r=await db.from("jewellery_products").select("*").order("id",{ascending:false});
+ if(r.error){$("products").innerText="Products load नहीं हुए";return}
+ products=r.data||[];render();
+}
+
+function render(){
+ $("products").innerHTML=products.length?products.map(p=>`
+ <div class="product">
+ ${p.image_url?`<img src="${p.image_url}">`:"<div style='height:190px;display:grid;place-items:center;font-size:60px'>💎</div>"}
+ <div class="info"><h3>${p.name}</h3><p>${p.description||""}</p></div>
+ </div>`).join(""):"<p>अभी कोई product नहीं है।</p>";
+ $("adminProducts").innerHTML=products.map(p=>`
+ <div style="border-top:1px solid #444;padding:15px 0">
+ <b>${p.name}</b><br>
+ <input id="n${p.id}" value="${p.name}">
+ <input id="d${p.id}" value="${p.description||""}">
+ <input id="i${p.id}" type="file" accept="image/*">
+ <button class="btn" onclick="updateProduct(${p.id})">UPDATE</button>
+ <button class="btn" onclick="deleteProduct(${p.id})">DELETE</button>
+ </div>`).join("");
+}
+
+function openAdmin(){
+ $("adminModal").style.display="flex";
+ if(settings){
+  $("a24").value=settings.gold_24k||0;
+  $("a22").value=settings.gold_22k||0;
+  $("a18").value=settings.gold_18k||0;
+  $("asilver").value=settings.silver||0;
+  $("apayal").value=settings.silver_payal_gram||0;
+ }
+ render();
+}
+function closeAdmin(){$("adminModal").style.display="none"}
+
+async function saveRates(){
+ if($("password").value!=="1234")return msg("❌ गलत Password",true);
+ if(!settings)return msg("❌ Database data नहीं मिला",true);
+ msg("⏳ Saving...");
+ let r=await db.from("jewellery_settings").update({
+  gold_24k:+$("a24").value,gold_22k:+$("a22").value,
+  gold_18k:+$("a18").value,silver:+$("asilver").value,
+  silver_payal_gram:+$("apayal").value,
+  updated_at:new Date().toISOString()
+ }).eq("id",1);
+ if(r.error)return msg("❌ "+r.error.message,true);
+ msg("✅ Rate Updated");
+ await loadRates();
+}
+
+async function upload(file){
+ if(!file)return "";
+ let ext=file.name.split(".").pop();
+ let path="p-"+Date.now()+"."+ext;
+ let r=await db.storage.from("jewellery-images").upload(path,file);
+ if(r.error)throw r.error;
+ return db.storage.from("jewellery-images").getPublicUrl(path).data.publicUrl;
+}
+
+async function addProduct(){
+ if($("password").value!=="1234")return msg("❌ पहले Password डालें",true);
+ let name=$("newName").value.trim();
+ if(!name)return msg("❌ Product Name डालें",true);
+ try{
+  msg("⏳ Uploading...");
+  let image_url=await upload($("newImage").files[0]);
+  let r=await db.from("jewellery_products").insert({
+   name,description:$("newDesc").value,image_url
+  });
+  if(r.error)throw r.error;
+  msg("✅ Product Added");
+  $("newName").value="";$("newDesc").value="";$("newImage").value="";
+  await loadProducts();
+ }catch(e){msg("❌ "+e.message,true)}
+}
+
+async function updateProduct(id){
+ if($("password").value!=="1234")return msg("❌ Password डालें",true);
+ try{
+  let data={name:$("n"+id).value,description:$("d"+id).value};
+  let f=$("i"+id).files[0];
+  if(f)data.image_url=await upload(f);
+  let r=await db.from("jewellery_products").update(data).eq("id",id);
+  if(r.error)throw r.error;
+  msg("✅ Product Updated");await loadProducts();
+ }catch(e){msg("❌ "+e.message,true)}
+}
+
+async function deleteProduct(id){
+ if($("password").value!=="1234")return msg("❌ Password डालें",true);
+ if(!confirm("Product delete करें?"))return;
+ let r=await db.from("jewellery_products").delete().eq("id",id);
+ if(r.error)return msg("❌ "+r.error.message,true);
+ msg("✅ Deleted");await loadProducts();
+}
+
+loadRates();
+loadProducts();
+</script>
+</body>
+</html>
